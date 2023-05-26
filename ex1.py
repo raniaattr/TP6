@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import medfilt
 
-# on charge les données du fichier températures.npy
+# on charge les données du fichier temperatures.npy
 data = np.load('temperatures.npy')
 Treel = data[:, 0]
 Vmesure = data[:, 1]
