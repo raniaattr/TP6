@@ -1,7 +1,6 @@
-mport numpy as np
+import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
-import cv2
 
 def conversion(image_RGB):
     R=image_RGB[:,:,0]/255
@@ -39,6 +38,7 @@ if __name__=='__main__':
     image_H[:,:,2]=0
     plt.imshow(image_H)
     plt.title('Image canal H')
+    plt.colorbar()
     plt.show()
     print(f'Canal Saturation : {image_HSV[:, :, 1]}')
     image_S=image_HSV.copy()
@@ -46,6 +46,7 @@ if __name__=='__main__':
     image_S[:,:,2]=0
     plt.imshow(image_S)
     plt.title('Image canal S')
+    plt.colorbar()
     plt.show()
     print(f'Canal Value : {image_HSV[:, :, 2]}')
     image_V=image_HSV.copy()
@@ -53,19 +54,23 @@ if __name__=='__main__':
     image_V[:,:,0]=0
     plt.imshow(image_V)
     plt.title('Image canal V')
+    plt.colorbar()
+    plt.show()
+    # création d'un masque en fonction des seuils sur les canaux H, S et V :
+    Hseuil = (0.4, 4)
+    Sseuil = (0.4, 3)
+    Vseuil = (0.5, 1)
+    masque = (( image_HSV[:,:,0] >= Hseuil[0]) & (image_HSV[:,:,0] <= Hseuil[1]) & (image_HSV[:,:,1] >= Sseuil[0]) & (image_HSV[:,:,1] <= Sseuil[1]) & (image_HSV[:,:,2] >= Vseuil[0]) & (image_HSV[:,:,2] <= Vseuil[1]))
+    plt.imshow(masque)
+    plt.title('Masque')
     plt.show()
 
-    # création d'un masque en fonction des seuils sur les canaux H, S et V
-    Hseuil = (20, 40)
-    Sseuil = (100, 255)
-    Vseuil = (50, 255)
-
-    masqueH = np.select([(image_H >= Hseuil[0]) & (image_H <= Hseuil[1])], [1])
-    masqueS = np.select([(image_S >= Sseuil[0]) & (image_S <= Sseuil[1])], [1])
-    masqueV = np.select([(image_V >= Vseuil[0]) & (image_V <= Vseuil[1])], [1])
-
-    masque = masqueH & masqueS & masqueV
-
     #Question4
-    image_modif = image_HSV.copy()
-    
+    image_modif=np.copy(image_HSV)
+    image_modif[:,:,0][masque]=0
+    image_modif = colors.hsv_to_rgb(image_modif)
+    plt.imshow(image_modif)
+    plt.title('Image modifiée')
+    plt.show()
+
+
