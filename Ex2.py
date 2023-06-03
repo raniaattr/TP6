@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.colors as colors
 
 def conversion(image_RGB):
     R=image_RGB[:,:,0]/255
@@ -66,11 +65,11 @@ if __name__=='__main__':
     plt.show()
 
     #Question4
-    image_modif=np.copy(image_HSV)
-    image_modif[:,:,0][masque]=0
-    image_modif = colors.hsv_to_rgb(image_modif)
+    image_modif=np.copy(image_RGB)
+    image_modif[:,:,0][masque]=255
+    image_modif[:, :, 1][masque] = 0
+    image_modif[:, :, 2][masque] = 0
     plt.imshow(image_modif)
     plt.title('Image modifiée')
     plt.show()
-
 
